@@ -13,6 +13,18 @@ body {
   color: #000000;
 }
 
+
+/*
+* show
+* hide
+*/
+.show{
+  display: block;
+}
+
+
+
+
 .status {
   display: block;
   color: red;
@@ -827,6 +839,7 @@ textarea:focus {
 }
 
 /*Modals*/
+.popup__cringe, 
 .popup,
 .popup_engineer,
 .popup_calc_end {
