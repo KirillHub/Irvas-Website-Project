@@ -15,14 +15,12 @@ body {
 
 
 /*
-* show
-* hide
+* show modal class
 */
 .show{
   display: block;
+  overflow:hidden;
 }
-
-
 
 
 .status {
@@ -1164,6 +1162,10 @@ textarea:focus {
 
   .decoration_item a {
     font-size: 1.8rem;
+  }
+  .decoration_slider{
+    display: flex;
+    justify-content: space-between;
   }
 
   /*Payment*/

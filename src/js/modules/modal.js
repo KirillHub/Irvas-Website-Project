@@ -1,69 +1,74 @@
 
+const openModal = (autoOpenModalWindow, styleClassName, modalSelector) => {
+	const modal = document.querySelector(modalSelector);
 
-const openModal = (autoOpenModalWindow, ...modalSelector) => {
-	const modals = [...modalSelector];
-
-	modals.map(modal => document.querySelector(modal))
-		.forEach(modal => {
-			if (!modal.classList.contains('show')) modal.classList.add('show');
-		});
+	if (!modal.classList.contains(styleClassName)) modal.classList.add(styleClassName);
 
 	console.log(autoOpenModalWindow);
 	if (autoOpenModalWindow) clearInterval(autoOpenModalWindow);
 };
 
 
+const closeModal = (styleClassName, modalSelector) => {
+	const modal = document.querySelector(modalSelector);
 
-const closeModal = (...modalSelector) => {
-	const modals = [...modalSelector];
-
-	modals.map(modal => document.querySelector(modal))
-		.forEach(modal => {
-			if (modal.classList.contains('show')) modal.classList.remove('show');
-		});
-
+	if (modal.classList.contains(styleClassName)) modal.classList.remove(styleClassName);
 };
 
 
-const modal = (triggerSelectorOpen, triggerSelectorClose, autoOpenModalWindow,
-	modalSelectorPopupEngineer, modalSelectorPopup) => {
+const modal = (styleClassName, triggerSelector, triggerSelectorClose,
+	autoOpenModalWindow, modalSelector) => {
 
-	const modalTriggerSelectorOpen = document.querySelectorAll(triggerSelectorOpen),
-		modalTriggerSelectorClose = document.querySelectorAll(triggerSelectorClose)
+	const triggerOpen = document.querySelectorAll(triggerSelector),
+		triggerClose = document.querySelector(triggerSelectorClose);
 
-	modalTriggerSelectorOpen.forEach(clickedElement => {
-		clickedElement.addEventListener('click', e => {
-			if (e.target.getAttribute('data-modal') == 'btn') {
-				openModal(autoOpenModalWindow, modalSelectorPopupEngineer)
-			} else openModal(autoOpenModalWindow, modalSelectorPopup);
-		});
-	});
-
-
-	modalTriggerSelectorClose.forEach(clickedElement => {
+	triggerOpen.forEach(clickedElement => {
 		clickedElement.addEventListener('click', e => {
 			const selector = e.target;
-			if (selector && selector.tagName === 'STRONG') {
-				closeModal(modalSelectorPopupEngineer,
-					modalSelectorPopup);
-			}
+			if (selector) {
+				e.preventDefault();
+
+				openModal(autoOpenModalWindow, styleClassName, modalSelector);
+			};
 		});
 	});
 
 
-	document.addEventListener('keydown', (e) => {
+	triggerClose.addEventListener('click', e => {
+		const selector = e.target;
+		if (selector && selector.tagName === 'STRONG') {
+			closeModal(styleClassName, modalSelector);
+		}
 
+	});
+
+	/*
+	* @descr: close the modal window after clicking anywhere 
+	*on the faucet except the modal window
+	*/
+	document.body.addEventListener('click', e => {
+		const selector = e.target;
+		if (selector === document.querySelector(modalSelector)) {
+			closeModal(styleClassName, modalSelector);
+		}
+	});
+
+	/*
+* @descr: close the modal after click "Escape"
+*/
+	document.addEventListener('keydown', (e) => {
 		if (e.code === 'Escape') {
-			closeModal(modalSelectorPopupEngineer, modalSelectorPopup);
+			closeModal(styleClassName, modalSelector);
 		};
 	});
 
-
+	/*
+* @descr: popup modal window after scroll down the page
+*/
 	const showModalByScroll = () => {
 		if (window.pageYOffset + document.documentElement.clientHeight >=
 			document.documentElement.scrollHeight - 1) {
-			openModal(autoOpenModalWindow, modalSelectorPopupEngineer,
-				modalSelectorPopup);
+			openModal(autoOpenModalWindow, styleClassName, modalSelector);
 			window.removeEventListener('scroll', showModalByScroll)
 		}
 	};
@@ -72,9 +77,7 @@ const modal = (triggerSelectorOpen, triggerSelectorClose, autoOpenModalWindow,
 
 };
 
-
 export default modal;
 
 export { openModal, closeModal };
-
 

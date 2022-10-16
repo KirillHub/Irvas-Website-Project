@@ -1,5 +1,5 @@
-// import $ from 'jquery';  //? later ON
-// import 'slick-carousel'; //? later ON
+import $ from 'jquery'; 
+import 'slick-carousel';
 
 $(document).ready(function () {
     $('.glazing_slider').slick({
